@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
-import utils.WaitTool;
 
 public class InvoicesListPage extends BasePage {
 
@@ -33,23 +32,30 @@ public class InvoicesListPage extends BasePage {
     }
 
     // =========================
+    // LOCATORS (DYNAMIC)
+    // =========================
+
+    private By getCheckboxLocatorByValue(String value) {
+        return By.cssSelector("input[type='checkbox'][value='" + value + "']");
+    }
+
+    // =========================
     // Basic actions
     // =========================
 
-
-    private WebElement getCheckboxByValue(String value) {
-       By checkboxLocator = By.cssSelector("input[type='checkbox'][value='" + value + "']");
-       return super.waitForElementByLocator(checkboxLocator);
+    public void openPage() {
+        driver.get(URL);
     }
-
 
     public boolean isUserPanelDisplayed() {
         return super.isElementDisplayed(userPanel);
     }
 
-    public void openPage() {
-        driver.get(URL);
+    private WebElement getCheckboxByValue(String value) {
+        By checkboxLocator = By.cssSelector("input[type='checkbox'][value='" + value + "']");
+        return super.waitForElementByLocator(checkboxLocator);
     }
+
 
     // =========================
     // Business action
@@ -57,13 +63,22 @@ public class InvoicesListPage extends BasePage {
 
     public void selectCheckBoxByValue(String value) {
         WebElement checkbox = getCheckboxByValue(value);
-        if (!super.isElementSelected(checkbox)){
+        if (!super.isElementSelected(checkbox)) {
             super.click(checkbox);
         }
     }
 
+    public void deleteInvoice(String value) {
+        selectCheckBoxByValue(value);
+        super.click(deleteButton);
+        super.click(deleteConfirmButton);
+        super.waitForElementDisappear(getCheckboxLocatorByValue(value));
+    }
 
-
+    public boolean isInvoiceDeleted(String invoiceValue) {
+        By invoiceLocator = getCheckboxLocatorByValue(invoiceValue);
+        return !super.isElementPresent(invoiceLocator);
+    }
 
 
 }
