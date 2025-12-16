@@ -22,14 +22,20 @@ public class BaseTest {
 
     }
 
+/* /**
+ * These two methods are used for tests on pages that require authentication.
+ * They perform login first, after which the page-specific method
+ * openPage() should be called.
+ */
+
     public void loginInEn(String email , String password){
         driver.get("https://tester-123.inv.bg/login");
-        webApp.enterPage().login("malebogia91@gmail.com","12345678", EnterPage.Language.EN);
+        webApp.enterPage().login(email,password, EnterPage.Language.EN);
 
     }
 
     public void loginInBg(String email , String password){
-        webApp.enterPage().login("malebogia91@gmail.com","12345678", EnterPage.Language.BG);
+        webApp.enterPage().login(email, password, EnterPage.Language.BG);
 
     }
 

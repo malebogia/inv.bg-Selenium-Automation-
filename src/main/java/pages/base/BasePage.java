@@ -45,8 +45,8 @@ public class BasePage {
     // CHECKS (NO ASSERTS)
     // ========================
 
-    public boolean isElementSelected(WebElement webelement) {
-        return webelement.isSelected();
+    public boolean isElementSelected(WebElement webElement) {
+        return webElement.isSelected();
     }
 
     public boolean isElementDisplayed(WebElement webelement) {
@@ -58,14 +58,35 @@ public class BasePage {
         }
     }
 
+    public boolean isElementPresent(By locator){
+     return !driver.findElements(locator).isEmpty();
+    }
+
+
+
+    /**
+     * Checks that element does NOT exist in the DOM
+     * Used for delete validations
+     */
+    public boolean isElementNotPresent(By locator) {
+        return driver.findElements(locator).isEmpty();
+    }
+
+
+
     //==================
-    //  WAITERS
+    //  WAITS
     // ===============
 
 
 
     protected WebElement waitForElementByLocator(By locator){
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    // Wait for delete operations.
+    public void waitForElementDisappear(By locator){
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
 

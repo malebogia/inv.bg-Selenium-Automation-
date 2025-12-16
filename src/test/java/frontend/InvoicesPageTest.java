@@ -3,6 +3,8 @@ package frontend;
 import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.base.WebApp;
+import pages.frontend.InvoicesListPage;
 
 public class InvoicesPageTest extends BaseTest {
 
@@ -13,17 +15,16 @@ public class InvoicesPageTest extends BaseTest {
      */
 
 
-
     @Test
-    public void TestInvoicesPage(){
-        loginInEn("malebogia91@gmail.com", "12345678");
+    public void deleteInvoice() {
+        super.loginInEn("malebogia91@gmail.com", "12345678");
         webApp.invoicesListPage().openPage();
-        webApp.invoicesListPage().selectCheckBoxByValue("40");
-
+        webApp.invoicesListPage().deleteInvoice("40");
+        Assert.assertTrue(webApp.invoicesListPage().isInvoiceDeleted("40"),
+                "Invoice was NOT deleted"
+        );
 
     }
-
-
 
 
 }
