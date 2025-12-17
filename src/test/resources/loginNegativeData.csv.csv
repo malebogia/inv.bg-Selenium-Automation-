@@ -1,0 +1,6 @@
+email,password,expectedResult
+,Password123,"Invalid username or password. Please try again."
+malebogia91@gmail.com,,"Invalid username or password. Please try again."
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,password123,"Invalid username or password. Please try again."
+malebogia91@gmail,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,"Invalid username or password. Please try again."
+12345678,password123,"Invalid username or password. Please try again."

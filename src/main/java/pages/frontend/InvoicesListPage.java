@@ -8,7 +8,7 @@ import pages.base.BasePage;
 
 public class InvoicesListPage extends BasePage {
 
-    private static final String URL = "https://tester-123.inv.bg/invoices";
+    private static final String URL = "https://tester-123.inv.bg/login";
 
     // =========================
     // Elements

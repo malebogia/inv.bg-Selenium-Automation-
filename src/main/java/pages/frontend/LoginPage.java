@@ -13,7 +13,7 @@ public class LoginPage extends BasePage {
     }
 
 
-    private static final String URL = "https://inv.bg/home";
+        private static final String URL = " ";
 
     // =========================
     // Elements
