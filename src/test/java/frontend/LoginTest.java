@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.CSVDataProvider;
 
-public class EnterPageTest extends BaseTest {
+public class LoginTest  extends BaseTest {
 
     @Test(
          dataProvider = "loginNegativeData",

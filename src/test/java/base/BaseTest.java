@@ -3,7 +3,7 @@ package base;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeMethod;
 import pages.base.WebApp;
-import pages.frontend.EnterPage;
+import pages.frontend.LoginPage;
 
 public class BaseTest {
 
@@ -27,12 +27,12 @@ public class BaseTest {
 
     public void loginInEn(String email , String password){
         driver.get("https://tester-123.inv.bg/login");
-        webApp.enterPage().login(email,password, EnterPage.Language.EN);
+        webApp.loginPage().login(email,password, LoginPage.Language.EN);
 
     }
 
     public void loginInBg(String email , String password){
-        webApp.enterPage().login(email, password, EnterPage.Language.BG);
+        webApp.loginPage().login(email, password, LoginPage.Language.BG);
 
     }
 
