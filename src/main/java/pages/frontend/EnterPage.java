@@ -12,6 +12,8 @@ public class EnterPage extends BasePage {
         EN
     }
 
+    private static final String  URL = "https://tester-123.inv.bg/login";
+
     public EnterPage(WebDriver driver) {
         super(driver);
     }
@@ -35,9 +37,19 @@ public class EnterPage extends BasePage {
     @FindBy(css = "input[value='EN']")
     WebElement radioButtonEn;
 
+    @FindBy(id = "error")
+    WebElement errorMessage;
+
+    @FindBy(id = "firstloginalert2")
+    WebElement firstLoginAlert;
+
     // =========================
     // Basic actions
     // =========================
+
+    public void openPage(){
+        driver.get("https://tester-123.inv.bg/login");
+    }
 
     private void enterEmail(String email) {
         super.typeText(emailFieldInput, email);
@@ -75,6 +87,25 @@ public class EnterPage extends BasePage {
         selectLanguage(language);
         submitLogin();
 
+    }
+
+
+    public void tryToLoginWithInvalidCredentials(String email , String password){
+        if (email != null){
+            enterEmail(email);
+        }
+        enterPassword(password);
+        selectLanguage(Language.EN);
+        submitLogin();
+
+    }
+
+    public boolean isErrorMessageDisplayed(){
+       return super.isElementDisplayed(errorMessage);
+    }
+
+    public boolean isAlertMessageDisplayed(){
+        return  super.isElementDisplayed(firstLoginAlert);
     }
 
 

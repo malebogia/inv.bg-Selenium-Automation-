@@ -1,10 +1,7 @@
 package base;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import pages.base.BasePage;
 import pages.base.WebApp;
 import pages.frontend.EnterPage;
 
@@ -39,11 +36,11 @@ public class BaseTest {
 
     }
 
-  //*  @AfterMethod
-  //  public void tearDown(){
-  //      driver.quit();
-  //  }
-
+  /* @AfterMethod
+    public void tearDown(){
+        driver.quit();
+    }
+*/
 
 
 }

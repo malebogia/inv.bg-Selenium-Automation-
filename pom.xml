@@ -23,6 +23,8 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -30,7 +32,12 @@
             <scope>test</scope>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.12.0</version>
+        </dependency>
 
 
     </dependencies>
