@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
-public class EnterPage extends BasePage {
+public class LoginPage extends BasePage {
 
     public enum Language {
         BG,
@@ -14,7 +14,7 @@ public class EnterPage extends BasePage {
 
     private static final String  URL = "https://tester-123.inv.bg/login";
 
-    public EnterPage(WebDriver driver) {
+    public LoginPage(WebDriver driver) {
         super(driver);
     }
 

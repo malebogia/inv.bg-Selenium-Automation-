@@ -3,8 +3,9 @@ package frontend;
 import base.BaseTest;
 import org.testng.annotations.Test;
 import pages.frontend.LoginPage;
+import utils.CSVDataProvider;
 
-public class LoginTest extends BaseTest {
+public class MainTest extends BaseTest {
 
     @Test
     public void testLogIn(){

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CSVDataProvider {
     /*
-This class was not written entirely by me.
+This class was not written  by me.
 I generated it with ChatGPT, but I didn’t just copy and paste it —
 I rewrote it line by line to understand how it works.
 */
