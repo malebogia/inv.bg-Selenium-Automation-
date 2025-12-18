@@ -5,77 +5,110 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
-public class LoginPage extends BasePage {
+public class EnterPage extends BasePage {
 
-
-    public LoginPage(WebDriver driver) {
-        super(driver);
+    public enum Language {
+        BG,
+        EN
     }
 
+    private static final String  URL = "https://tester-123.inv.bg/login";
 
-        private static final String URL = " ";
+    public EnterPage(WebDriver driver) {
+        super(driver);
+    }
 
     // =========================
     // Elements
     // =========================
 
+    @FindBy(id = "loginusername")
+    WebElement emailFieldInput;
 
-    @FindBy (css = "#inheader a.inheaderlogin")
-    WebElement loginButton;
-
-    @FindBy (id = "login-subdomain")
-    WebElement emailInputField;
-
-    @FindBy (id = "gologin")
-    WebElement enterButton;
-
-    @FindBy (id = "loginpassword")
+    @FindBy(id = "loginpassword")
     WebElement passwordField;
 
+    @FindBy(id = "loginsubmit")
+    WebElement loginButton;
+
+    @FindBy(css = "input[value='BG']")
+    WebElement radioButtonBg;
+
+    @FindBy(css = "input[value='EN']")
+    WebElement radioButtonEn;
+
+    @FindBy(id = "error")
+    WebElement errorMessage;
+
+    @FindBy(id = "firstloginalert2")
+    WebElement firstLoginAlert;
 
     // =========================
     // Basic actions
     // =========================
 
+    public void openPage(){
+        driver.get("https://tester-123.inv.bg/login");
+    }
 
-    public void goToLoginPage() {
-        driver.get(URL);
+    private void enterEmail(String email) {
+        super.typeText(emailFieldInput, email);
+    }
+
+    private void enterPassword(String password) {
+        super.typeText(passwordField, password);
     }
 
 
-    public void clickLoginButton() {
+    private void selectLanguage(Language language){
+        if (language == Language.BG && !super.isElementSelected(radioButtonBg)){
+            super.click(radioButtonBg);
+        }
+        if (language == Language.EN && !super.isElementSelected(radioButtonEn)){
+            super.click(radioButtonEn);
+        }
+
+    }
+
+
+    private void submitLogin() {
         super.click(loginButton);
-    }
-
-    public void enterEmail(String string) {
-        super.typeText(emailInputField, string);
-    }
-
-    public void clickEnterButton(){
-        super.click(enterButton);
-    }
-
-    public boolean isPasswordFieldDisplayed(){
-       return passwordField.isDisplayed();
-
-    }
-
-    public  String getEnterPageUrl(){
-        return super.getCurrentUrl();
     }
 
     // =========================
     // Business action
     // =========================
 
-
-    public void login(String email){
-        clickLoginButton();
-        enterEmail(email);
-        clickEnterButton();
+    public void login(String email, String password, Language language){
+        if (email != null){
+            enterEmail(email);
+        }
+        enterPassword(password);
+        selectLanguage(language);
+        submitLogin();
 
     }
 
 
-}
+    public void tryToLoginWithInvalidCredentials(String email , String password){
+        if (email != null){
+            enterEmail(email);
+        }
+        enterPassword(password);
+        selectLanguage(Language.EN);
+        submitLogin();
 
+    }
+
+    public boolean isErrorMessageDisplayed(){
+       return super.isElementDisplayed(errorMessage);
+    }
+
+    public boolean isAlertMessageDisplayed(){
+        return  super.isElementDisplayed(firstLoginAlert);
+    }
+
+
+
+
+}

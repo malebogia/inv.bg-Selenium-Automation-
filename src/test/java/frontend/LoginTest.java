@@ -3,21 +3,20 @@ package frontend;
 import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.base.WebApp;
-import pages.frontend.EnterPage;
+import utils.CSVDataProvider;
 
-public class LoginTest extends BaseTest {
+public class EnterPageTest extends BaseTest {
 
-    @Test
-    public void testLogIn(){
-        webApp.loginPage().goToLoginPage();
-        webApp.loginPage().login("malebogia91@gmail.com");
-        webApp.enterPage().login("malebogia91@gmail.com","12345678", EnterPage.Language.EN);
-
-
+    @Test(
+         dataProvider = "loginNegativeData",
+            dataProviderClass = CSVDataProvider.class
+    )
+    public void tryToLoginWithInvalidCredentials(String email,String password,String expectedResult){
+        webApp.loginPage().openPage();
+        webApp.loginPage().tryToLoginWithInvalidCredentials(email, password);
+        Assert.assertTrue(webApp.loginPage().isErrorMessageDisplayed() ||
+                webApp.loginPage().isAlertMessageDisplayed());
 
     }
-
-
 
 }
