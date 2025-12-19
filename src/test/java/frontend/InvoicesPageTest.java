@@ -26,5 +26,15 @@ public class InvoicesPageTest extends BaseTest {
 
     }
 
+    @Test
+    public void probaSearch(){
+        super.loginInEn("malebogia91@gmail.com", "12345678");
+        webApp.invoicesListPage().openPage();
+        webApp.invoicesListPage().clickSearchButton();
+        Assert.assertTrue(webApp.invoicesListPage().isInvoiceNumberInputDisplayed());
+    }
+
+
+
 
 }

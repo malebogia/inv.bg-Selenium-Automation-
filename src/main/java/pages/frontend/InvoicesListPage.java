@@ -26,6 +26,12 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "div.modal-inner button.modal-confirm__cancel-button")
     WebElement cancelDeleteButton;
 
+    @FindBy (css = "a.toggle-filter")
+    WebElement searchButton;
+
+    @FindBy (id = "invnmb")
+    WebElement invoiceNumberInput;
+
 
     public InvoicesListPage(WebDriver driver) {
         super(driver);
@@ -78,6 +84,14 @@ public class InvoicesListPage extends BasePage {
     public boolean isInvoiceDeleted(String invoiceValue) {
         By invoiceLocator = getCheckboxLocatorByValue(invoiceValue);
         return !super.isElementPresent(invoiceLocator);
+    }
+
+    public boolean isInvoiceNumberInputDisplayed(){
+       return super.isElementDisplayed(invoiceNumberInput);
+    }
+
+    public void clickSearchButton(){
+        super.click(searchButton);
     }
 
 
