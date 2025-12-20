@@ -1,5 +1,6 @@
 package pages.frontend;
 
+import enums.InvoiceSearchType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,19 +19,37 @@ public class InvoicesListPage extends BasePage {
     private WebElement userPanel;
 
     @FindBy(css = "a.icon.delete")
-    WebElement deleteButton;
+    private WebElement deleteButton;
 
     @FindBy(css = "div.modal-inner button.modal-confirm__ok-button")
-    WebElement deleteConfirmButton;
+    private WebElement deleteConfirmButton;
 
     @FindBy(css = "div.modal-inner button.modal-confirm__cancel-button")
-    WebElement cancelDeleteButton;
+    private WebElement cancelDeleteButton;
 
-    @FindBy (css = "a.toggle-filter")
-    WebElement searchButton;
+    @FindBy(css = "a.toggle-filter")
+    private WebElement searchButton;
 
-    @FindBy (id = "invnmb")
-    WebElement invoiceNumberInput;
+    @FindBy(id = "invnmb")
+    private WebElement searchInvoiceNumberInput;
+
+    @FindBy(id = "client_name")
+    private WebElement searchClientNameInput;
+
+    @FindBy(id = "client")
+    private WebElement searchCompanyNumberInput;
+
+    @FindBy(id = "client-recipient")
+    private WebElement searchRecipientInput;
+
+    @FindBy(css = "button[name='FilterForm']")
+    private WebElement searchButtonSubmit;
+
+    @FindBy(id = "total-invoices-found")
+    private WebElement foundInvoiceMessage;
+
+    @FindBy(css = "a.selenium-client-link")
+    private WebElement invoiceSearchResultName;
 
 
     public InvoicesListPage(WebDriver driver) {
@@ -86,14 +105,66 @@ public class InvoicesListPage extends BasePage {
         return !super.isElementPresent(invoiceLocator);
     }
 
-    public boolean isInvoiceNumberInputDisplayed(){
-       return super.isElementDisplayed(invoiceNumberInput);
-    }
 
-    public void clickSearchButton(){
+    private void clickSearchButton() {
         super.click(searchButton);
     }
 
+    private void clickSearchButtonSubmit() {
+        super.click(searchButtonSubmit);
+    }
+
+
+    public WebElement invoiceNumberInput() {
+        return searchInvoiceNumberInput;
+    }
+
+    public WebElement sentToClientNameInput() {
+        return searchClientNameInput;
+    }
+
+    public WebElement companyNumberInput() {
+        return searchCompanyNumberInput;
+    }
+
+    public WebElement recipientNameInput() {
+        return searchRecipientInput;
+    }
+
+
+    public String searchInvoice(InvoiceSearchType type,String value) {
+
+        clickSearchButton();
+        WebElement inputField = resolveSearchField(type);
+
+        typeText(inputField,value);
+        clickSearchButtonSubmit();
+        return getText(invoiceSearchResultName);
+
+
+    }
+
+
+    // =========================
+    // Internal helper
+    // =========================
+
+
+    private WebElement resolveSearchField(InvoiceSearchType type){
+        switch (type){
+            case INVOICE_NUMBER:
+                return searchInvoiceNumberInput;
+            case CLIENT_NAME:
+                return searchClientNameInput;
+            case COMPANY_NUMBER:
+                return searchCompanyNumberInput;
+            case RECIPIENT:
+                return searchRecipientInput;
+            default:
+                throw new IllegalArgumentException("Please enter only supported value");
+        }
+
+    }
 
 }
 

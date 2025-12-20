@@ -40,6 +40,16 @@ public class BasePage {
         element.sendKeys(string);
     }
 
+    public void clearText(WebElement element) {
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
+    }
+
+    public String getText(WebElement element) {
+        wait.until(ExpectedConditions.visibilityOf(element));
+        return element.getText();
+    }
+
 
     // =========================
     // CHECKS (NO ASSERTS)
@@ -58,10 +68,9 @@ public class BasePage {
         }
     }
 
-    public boolean isElementPresent(By locator){
-     return !driver.findElements(locator).isEmpty();
+    public boolean isElementPresent(By locator) {
+        return !driver.findElements(locator).isEmpty();
     }
-
 
 
     /**
@@ -73,19 +82,17 @@ public class BasePage {
     }
 
 
-
     //==================
     //  WAITS
     // ===============
 
 
-
-    protected WebElement waitForElementByLocator(By locator){
+    protected WebElement waitForElementByLocator(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     // Wait for delete operations.
-    public void waitForElementDisappear(By locator){
+    public void waitForElementDisappear(By locator) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
