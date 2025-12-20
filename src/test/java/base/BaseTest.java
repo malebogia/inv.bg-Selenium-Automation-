@@ -1,20 +1,24 @@
 package base;
 
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.base.WebApp;
 import pages.frontend.LoginPage;
+import services.AuthService;
 
 public class BaseTest {
 
     protected WebDriver driver;
     protected WebApp webApp;
+    protected AuthService auth;
 
     @BeforeMethod
     public void setUp(){
         driver = DriverFactory.initDriver();
         driver.manage().window().maximize();
         webApp = new WebApp(driver);
+        auth = new AuthService(driver,webApp);
 
 
     }
@@ -36,11 +40,11 @@ public class BaseTest {
 
     }
 
-  /* @AfterMethod
+  @AfterMethod
     public void tearDown(){
         driver.quit();
     }
-*/
+
 
 
 }
