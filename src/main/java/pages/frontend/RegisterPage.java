@@ -26,6 +26,9 @@ public class RegisterPage extends BasePage {
     @FindBy(id = "firmname")
     private WebElement companyNameInput;
 
+    @FindBy (id = "subdomain")
+    private WebElement companyDomainInput;
+
     @FindBy(id = "agree")
     private WebElement checkBoxAgreeConditions;
 
@@ -55,6 +58,8 @@ public class RegisterPage extends BasePage {
         super.typeText(companyNameInput,companyName);
     }
 
+    private void enterCompanyDomainName(String companyDomainName){super.typeText(companyDomainInput, companyDomainName);}
+
 
 
     private void selectCheckbox(){
@@ -72,10 +77,11 @@ public class RegisterPage extends BasePage {
     // Business action
     // =========================
 
-    public void registerNewAccount(String email,String password,String companyName){
+    public void registerNewAccount(String email,String password,String companyName, String domainName){
         enterEmail(email);
         enterPassword(password);
         enterCompanyName(companyName);
+        enterCompanyDomainName(domainName);
         selectCheckbox();
         clickRegistrationButton();
 

@@ -9,7 +9,6 @@ import pages.base.BasePage;
 
 public class InvoicesListPage extends BasePage {
 
-    private static final String URL = "https://tester-123.inv.bg/login";
 
     // =========================
     // Elements
@@ -64,20 +63,23 @@ public class InvoicesListPage extends BasePage {
         return By.cssSelector("input[type='checkbox'][value='" + value + "']");
     }
 
+    private By invoiceSearchResultNameLocator =
+            By.cssSelector("a.selenium-client-link");
+
     // =========================
     // Basic actions
     // =========================
 
-    public void openPage() {
-        driver.get(URL);
-    }
 
     public boolean isUserPanelDisplayed() {
         return super.isElementDisplayed(userPanel);
     }
 
     private WebElement getCheckboxByValue(String value) {
-        By checkboxLocator = By.cssSelector("input[type='checkbox'][value='" + value + "']");
+        By checkboxLocator = getCheckboxLocatorByValue(value);
+        if (super.isElementNotPresent(checkboxLocator)) {
+            throw new AssertionError("Invoice with number " + value + " was not found");
+        }
         return super.waitForElementByLocator(checkboxLocator);
     }
 
@@ -132,17 +134,21 @@ public class InvoicesListPage extends BasePage {
     }
 
 
-    public String searchInvoice(InvoiceSearchType type,String value) {
+    public String searchInvoice(InvoiceSearchType type, String value) {
 
         clickSearchButton();
         WebElement inputField = resolveSearchField(type);
 
-        typeText(inputField,value);
+        typeText(inputField, value);
         clickSearchButtonSubmit();
-        return getText(invoiceSearchResultName);
+        WebElement result =
+                super.waitForElementByLocator(invoiceSearchResultNameLocator);
+
+        return result.getText();
 
 
     }
+
 
 
     // =========================
@@ -150,8 +156,8 @@ public class InvoicesListPage extends BasePage {
     // =========================
 
 
-    private WebElement resolveSearchField(InvoiceSearchType type){
-        switch (type){
+    private WebElement resolveSearchField(InvoiceSearchType type) {
+        switch (type) {
             case INVOICE_NUMBER:
                 return searchInvoiceNumberInput;
             case CLIENT_NAME:

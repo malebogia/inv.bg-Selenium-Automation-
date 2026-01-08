@@ -42,7 +42,7 @@ public class MainPage extends BasePage {
     // =========================
 
 
-    public void goToLoginPage() {
+    public void openLoginPage() {
         driver.get(URL);
     }
 
@@ -74,7 +74,7 @@ public class MainPage extends BasePage {
     // =========================
 
 
-    public void login(String email){
+    public void startLogin(String email){
         clickLoginButton();
         enterEmail(email);
         clickEnterButton();

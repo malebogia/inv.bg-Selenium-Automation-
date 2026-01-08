@@ -1,5 +1,6 @@
 package pages.frontend;
 
+import enums.Language;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,12 +8,6 @@ import pages.base.BasePage;
 
 public class LoginPage extends BasePage {
 
-    public enum Language {
-        BG,
-        EN
-    }
-
-    private static final String  URL = "https://tester-123.inv.bg/login";
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -47,12 +42,18 @@ public class LoginPage extends BasePage {
     // Basic actions
     // =========================
 
-    public void openPage(){
-        driver.get("https://tester-123.inv.bg/login");
-    }
+
 
     private void enterEmail(String email) {
         super.typeText(emailFieldInput, email);
+    }
+
+    public void clearEmail(){
+        super.clearText(emailFieldInput);
+    }
+
+   public boolean isPasswordFieldDisplayed(){
+        return super.isElementDisplayed(passwordField);
     }
 
     private void enterPassword(String password) {
