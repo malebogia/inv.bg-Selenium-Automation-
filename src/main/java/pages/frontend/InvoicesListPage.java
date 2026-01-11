@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InvoicesListPage extends BasePage {
@@ -69,9 +68,34 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "input[name='chk-all']")
     WebElement checkAllBoxInvoices;
 
+    @FindBy (css = "a[title='Mark as']")
+    WebElement markAsButton;
+
+    @FindBy (css = "div .partially-paid")
+    WebElement partiallyPaidButton;
+
+    @FindBy(css = "div .paid")
+    WebElement paidButton;
+
+    @FindBy(css = "div .draft")
+    WebElement draftButton;
+
+    @FindBy(css = "div .accounted")
+    WebElement postedButton;
+
+    @FindBy(css = "div .archive")
+    WebElement archiveButton;
+
+    @FindBy(css = "div[rel='unpaid']")
+    WebElement unPaidButton;
+
+    @FindBy(css = "div .modal-confirm__buttons button.modal-confirm__ok-button")
+    WebElement confrimInvoiceStatusButton;
+
     public InvoicesListPage(WebDriver driver) {
         super(driver);
     }
+
 
     // =========================
     // LOCATORS (DYNAMIC)
@@ -92,6 +116,10 @@ public class InvoicesListPage extends BasePage {
 
     private By getAllInvoiceCheckBoxes =
             By.cssSelector("input[type='checkbox'][name='invoices[]']");
+
+    private By invoicePaymentStatusLocator(String invoiceNumber){
+        return By.xpath("//div[@data-status='partially-paid' and @rel='" + invoiceNumber + "']");
+    }
 
     // =========================
     // Basic actions
@@ -213,6 +241,8 @@ public boolean isInvoiceAnnulled(String invoiceNumber) {
     }
 }
 
+
+
 public boolean areAllInvoicesSelected(){
         super.click(checkAllBoxInvoices);
     List<WebElement> checkBoxes =
@@ -223,6 +253,26 @@ public boolean areAllInvoicesSelected(){
         }
     }
     return true;
+}
+
+public void makePartiallyPaidInvoiceStatus(String invoiceNumber){
+        selectCheckBoxByValue(invoiceNumber);
+        super.click(markAsButton);
+        super.click(partiallyPaidButton);
+        super.click(confrimInvoiceStatusButton);
+}
+
+public boolean isInvoicePartiallyPaid(String invoiceNumber){
+        WebElement invoiceStatus =
+                super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber));
+
+        return invoiceStatus
+                .getText()
+                .trim()
+                .equalsIgnoreCase("Partially paid");
+
+
+
 }
 
 

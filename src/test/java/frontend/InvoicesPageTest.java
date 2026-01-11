@@ -72,7 +72,30 @@ public class InvoicesPageTest extends BaseTest {
         );
     }
 
+/*
+ * This test fails consistently due to a known system issue.
+ * When the same scenario is executed manually, the invoice status
+ * is successfully changed to "Partially paid".
+ *
+ * During automated execution, the application displays the following error:
+ * "There was a problem updating the status.
+ * Please try again later or contact Technical Support.
+ * We apologize for the inconvenience caused."
+ *
+ * The failure is not related to the test logic.
+ */
+
+    @Test
+    public void makeInvoicePartiallyPaid(){
+        authService.defaultLogin();
+        webApp.homePage().openInvoicePage();
+        webApp.invoicesListPage().makePartiallyPaidInvoiceStatus("41");
+        Assert.assertTrue(webApp.invoicesListPage().isInvoicePartiallyPaid("41"));
+
+    }
+
 
 
 
 }
+
