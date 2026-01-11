@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class BasePage {
     protected WebDriver driver;
@@ -48,6 +49,11 @@ public class BasePage {
     public String getText(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
         return element.getText();
+    }
+
+    public List<WebElement> getElements(By elementLocator){
+       return driver.findElements(elementLocator);
+
     }
 
 

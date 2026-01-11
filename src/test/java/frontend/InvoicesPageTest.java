@@ -33,7 +33,6 @@ public class InvoicesPageTest extends BaseTest {
         };
     }
 
-
     @Test(dataProvider = "invoiceSearchData")
     public void searchInvoiceTest(InvoiceSearchType type, String value, String expectedResult) {
         authService.defaultLogin();
@@ -43,6 +42,37 @@ public class InvoicesPageTest extends BaseTest {
 
 
     }
+
+    @Test
+    public void cancelInvoice(){
+        authService.defaultLogin();
+        webApp.homePage().openInvoicePage();
+        webApp.invoicesListPage().cancelInvoice("38");
+        Assert.assertTrue(webApp.invoicesListPage().isSuccessCancelInvoiceMsgDisplayed());
+        Assert.assertTrue(webApp.invoicesListPage().isInvoiceAnnulled("38"));
+    }
+
+    @Test
+   public void  removeCancellationOfInvoice(){
+        authService.defaultLogin();
+        webApp.homePage().openInvoicePage();
+        webApp.invoicesListPage().removeInvoiceAnnulation("38");
+        Assert.assertTrue(webApp.invoicesListPage().isSuccessCancelInvoiceMsgDisplayed());
+        Assert.assertFalse(webApp.invoicesListPage().isInvoiceAnnulled("38"));
+    }
+
+    @Test
+    public void selectAllInvoices(){
+        authService.defaultLogin();
+        webApp.homePage().openInvoicePage();
+        Assert.assertTrue(
+                webApp.invoicesListPage().areAllInvoicesSelected(),
+                "Not all invoice checkboxes are selected"
+
+        );
+    }
+
+
 
 
 }

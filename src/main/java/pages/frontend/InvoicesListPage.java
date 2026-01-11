@@ -2,10 +2,14 @@ package pages.frontend;
 
 import enums.InvoiceSearchType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InvoicesListPage extends BasePage {
 
@@ -47,9 +51,23 @@ public class InvoicesListPage extends BasePage {
     @FindBy(id = "total-invoices-found")
     private WebElement foundInvoiceMessage;
 
-    @FindBy(css = "a.selenium-client-link")
-    private WebElement invoiceSearchResultName;
+    @FindBy(css = ".anull-deanull")
+    private WebElement cancelInvoiceButton;
 
+    @FindBy(css = ".anull-deanull-drop-down .anull")
+    WebElement cancelInvoiceDropDownButton;
+
+    @FindBy(css = "button.modal-confirm__ok-button")
+    WebElement modalConfirmButton;
+
+    @FindBy(css = ".deanull[title = 'Remove cancellation']")
+    WebElement removeCancellationButton;
+
+    @FindBy(id = "#okmsg")
+    WebElement cancellationOkMessage;
+
+    @FindBy(css = "input[name='chk-all']")
+    WebElement checkAllBoxInvoices;
 
     public InvoicesListPage(WebDriver driver) {
         super(driver);
@@ -66,6 +84,15 @@ public class InvoicesListPage extends BasePage {
     private By invoiceSearchResultNameLocator =
             By.cssSelector("a.selenium-client-link");
 
+    private By getAnnulledInvoiceLocator(String invoiceNumber) {
+        return By.cssSelector(
+                "tr[data-invoice-id='" + invoiceNumber + "'] span.anulled"
+        );
+    }
+
+    private By getAllInvoiceCheckBoxes =
+            By.cssSelector("input[type='checkbox'][name='invoices[]']");
+
     // =========================
     // Basic actions
     // =========================
@@ -73,6 +100,10 @@ public class InvoicesListPage extends BasePage {
 
     public boolean isUserPanelDisplayed() {
         return super.isElementDisplayed(userPanel);
+    }
+
+    public boolean isSuccessCancelInvoiceMsgDisplayed(){
+        return super.isElementDisplayed(cancellationOkMessage);
     }
 
     private WebElement getCheckboxByValue(String value) {
@@ -150,27 +181,74 @@ public class InvoicesListPage extends BasePage {
     }
 
 
+    public void cancelInvoice(String invoiceNumber) {
+        selectCheckBoxByValue(invoiceNumber);
+        super.click(cancelInvoiceButton);
+        super.click(cancelInvoiceDropDownButton);
+        super.click(modalConfirmButton);
 
-    // =========================
-    // Internal helper
-    // =========================
-
-
-    private WebElement resolveSearchField(InvoiceSearchType type) {
-        switch (type) {
-            case INVOICE_NUMBER:
-                return searchInvoiceNumberInput;
-            case CLIENT_NAME:
-                return searchClientNameInput;
-            case COMPANY_NUMBER:
-                return searchCompanyNumberInput;
-            case RECIPIENT:
-                return searchRecipientInput;
-            default:
-                throw new IllegalArgumentException("Please enter only supported value");
-        }
 
     }
+
+    public void removeInvoiceAnnulation(String invoiceNumber) {
+        if (!isInvoiceAnnulled(invoiceNumber)){
+            throw new IllegalArgumentException(
+                    "Invoice " + invoiceNumber + " is not annulled"
+            );
+
+    }
+        selectCheckBoxByValue(invoiceNumber);
+        super.click(cancelInvoiceButton);
+        super.click(removeCancellationButton);
+        super.click(modalConfirmButton);
+
+}
+
+public boolean isInvoiceAnnulled(String invoiceNumber) {
+    try {
+        super.waitForElementByLocator(getAnnulledInvoiceLocator(invoiceNumber));
+        return true;
+    } catch (TimeoutException e) {
+        return false;
+    }
+}
+
+public boolean areAllInvoicesSelected(){
+        super.click(checkAllBoxInvoices);
+    List<WebElement> checkBoxes =
+            super.getElements(getAllInvoiceCheckBoxes);
+    for (WebElement checkbox : checkBoxes){
+        if (!checkbox.isSelected()){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+
+// =========================
+// Internal helper
+// =========================
+
+
+private WebElement resolveSearchField(InvoiceSearchType type) {
+    switch (type) {
+        case INVOICE_NUMBER:
+            return searchInvoiceNumberInput;
+        case CLIENT_NAME:
+            return searchClientNameInput;
+        case COMPANY_NUMBER:
+            return searchCompanyNumberInput;
+        case RECIPIENT:
+            return searchRecipientInput;
+        default:
+            throw new IllegalArgumentException("Please enter only supported value");
+    }
+
+}
 
 }
 
