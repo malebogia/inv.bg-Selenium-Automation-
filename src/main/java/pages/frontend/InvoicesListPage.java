@@ -90,7 +90,7 @@ public class InvoicesListPage extends BasePage {
     WebElement unPaidButton;
 
     @FindBy(css = "div .modal-confirm__buttons button.modal-confirm__ok-button")
-    WebElement confrimInvoiceStatusButton;
+    WebElement confirmInvoiceStatusButton;
 
     public InvoicesListPage(WebDriver driver) {
         super(driver);
@@ -118,8 +118,12 @@ public class InvoicesListPage extends BasePage {
             By.cssSelector("input[type='checkbox'][name='invoices[]']");
 
     private By invoicePaymentStatusLocator(String invoiceNumber){
-        return By.xpath("//div[@data-status='partially-paid' and @rel='" + invoiceNumber + "']");
+        return By.xpath(
+                "//div[contains(@class,'drop-down-text') and contains(@class,'selenium-invoice-status-"
+                        + invoiceNumber + "')]"
+        );
     }
+
 
     // =========================
     // Basic actions
@@ -176,19 +180,19 @@ public class InvoicesListPage extends BasePage {
     }
 
 
-    public WebElement invoiceNumberInput() {
+    private WebElement invoiceNumberInput() {
         return searchInvoiceNumberInput;
     }
 
-    public WebElement sentToClientNameInput() {
+    private WebElement sentToClientNameInput() {
         return searchClientNameInput;
     }
 
-    public WebElement companyNumberInput() {
+    private WebElement companyNumberInput() {
         return searchCompanyNumberInput;
     }
 
-    public WebElement recipientNameInput() {
+    private WebElement recipientNameInput() {
         return searchRecipientInput;
     }
 
@@ -259,7 +263,7 @@ public void makePartiallyPaidInvoiceStatus(String invoiceNumber){
         selectCheckBoxByValue(invoiceNumber);
         super.click(markAsButton);
         super.click(partiallyPaidButton);
-        super.click(confrimInvoiceStatusButton);
+        super.click(confirmInvoiceStatusButton);
 }
 
 public boolean isInvoicePartiallyPaid(String invoiceNumber){
@@ -274,6 +278,29 @@ public boolean isInvoicePartiallyPaid(String invoiceNumber){
 
 
 }
+
+    public void makeInvoicePaid(String invoiceNumber){
+        if (isInvoicePaid(invoiceNumber)){
+            throw new IllegalStateException("Invoice " + invoiceNumber + " is already marked as Paid");
+        }
+        selectCheckBoxByValue(invoiceNumber);
+        super.click(markAsButton);
+        super.click(paidButton);
+        super.click(confirmInvoiceStatusButton);
+    }
+
+    public boolean isInvoicePaid(String invoiceNumber){
+        WebElement invoiceStatus =
+                super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber));
+        return invoiceStatus
+                .getText()
+                .trim()
+                .equalsIgnoreCase("Paid");
+    }
+
+
+
+
 
 
 
