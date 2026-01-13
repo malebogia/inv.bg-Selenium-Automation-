@@ -68,26 +68,26 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "input[name='chk-all']")
     private WebElement checkAllBoxInvoices;
 
-    @FindBy (css = "a[title='Mark as']")
+    @FindBy(css = "a[title='Mark as']")
     private WebElement markAsButton;
 
-    @FindBy (css = "div .partially-paid")
-    private  WebElement partiallyPaidButton;
+    @FindBy(css = "div .partially-paid")
+    private WebElement partiallyPaidButton;
 
     @FindBy(css = "div .paid")
-    private  WebElement paidButton;
+    private WebElement paidButton;
 
     @FindBy(css = "div .draft")
-    private  WebElement draftButton;
+    private WebElement draftButton;
 
     @FindBy(css = "div .accounted")
-    private  WebElement postedButton;
+    private WebElement postedButton;
 
     @FindBy(css = "div .archive")
-    private  WebElement archiveButton;
+    private WebElement archiveButton;
 
     @FindBy(css = "div[rel='unpaid']")
-    private  WebElement unPaidButton;
+    private WebElement unPaidButton;
 
     @FindBy(css = "div .modal-confirm__buttons button.modal-confirm__ok-button")
     WebElement confirmInvoiceStatusButton;
@@ -117,11 +117,19 @@ public class InvoicesListPage extends BasePage {
     private By getAllInvoiceCheckBoxes =
             By.cssSelector("input[type='checkbox'][name='invoices[]']");
 
-    private By invoicePaymentStatusLocator(String invoiceNumber){
+    private By invoicePaymentStatusLocator(String invoiceNumber) {
         return By.xpath(
                 "//div[contains(@class,'drop-down-text') and contains(@class,'selenium-invoice-status-"
                         + invoiceNumber + "')]"
         );
+    }
+
+    private By invoiceStatusLocator(String invoiceNumber) {
+        return By.xpath(
+                "//tr[@data-invoice-id='" + invoiceNumber
+                        + "']//td[contains(@class,'selenium-inv-status invoices')]"
+        );
+
     }
 
 
@@ -134,7 +142,7 @@ public class InvoicesListPage extends BasePage {
         return super.isElementDisplayed(userPanel);
     }
 
-    public boolean isSuccessCancelInvoiceMsgDisplayed(){
+    public boolean isSuccessCancelInvoiceMsgDisplayed() {
         return super.isElementDisplayed(cancellationOkMessage);
     }
 
@@ -223,50 +231,49 @@ public class InvoicesListPage extends BasePage {
     }
 
     public void removeInvoiceAnnulation(String invoiceNumber) {
-        if (!isInvoiceAnnulled(invoiceNumber)){
+        if (!isInvoiceAnnulled(invoiceNumber)) {
             throw new IllegalArgumentException(
                     "Invoice " + invoiceNumber + " is not annulled"
             );
 
-    }
+        }
         selectCheckBoxByValue(invoiceNumber);
         super.click(cancelInvoiceButton);
         super.click(removeCancellationButton);
         super.click(modalConfirmButton);
 
-}
-
-public boolean isInvoiceAnnulled(String invoiceNumber) {
-    try {
-        super.waitForElementByLocator(getAnnulledInvoiceLocator(invoiceNumber));
-        return true;
-    } catch (TimeoutException e) {
-        return false;
     }
-}
 
-
-
-public boolean areAllInvoicesSelected(){
-        super.click(checkAllBoxInvoices);
-    List<WebElement> checkBoxes =
-            super.getElements(getAllInvoiceCheckBoxes);
-    for (WebElement checkbox : checkBoxes){
-        if (!checkbox.isSelected()){
+    public boolean isInvoiceAnnulled(String invoiceNumber) {
+        try {
+            super.waitForElementByLocator(getAnnulledInvoiceLocator(invoiceNumber));
+            return true;
+        } catch (TimeoutException e) {
             return false;
         }
     }
-    return true;
-}
 
-public void makePartiallyPaidInvoiceStatus(String invoiceNumber){
+
+    public boolean areAllInvoicesSelected() {
+        super.click(checkAllBoxInvoices);
+        List<WebElement> checkBoxes =
+                super.getElements(getAllInvoiceCheckBoxes);
+        for (WebElement checkbox : checkBoxes) {
+            if (!checkbox.isSelected()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void makePartiallyPaidInvoiceStatus(String invoiceNumber) {
         selectCheckBoxByValue(invoiceNumber);
         super.click(markAsButton);
         super.click(partiallyPaidButton);
         super.click(confirmInvoiceStatusButton);
-}
+    }
 
-public boolean isInvoicePartiallyPaid(String invoiceNumber){
+    public boolean isInvoicePartiallyPaid(String invoiceNumber) {
         WebElement invoiceStatus =
                 super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber));
 
@@ -276,11 +283,10 @@ public boolean isInvoicePartiallyPaid(String invoiceNumber){
                 .equalsIgnoreCase("Partially paid");
 
 
+    }
 
-}
-
-    public void makeInvoicePaid(String invoiceNumber){
-        if (isInvoicePaid(invoiceNumber)){
+    public void makeInvoicePaid(String invoiceNumber) {
+        if (isInvoicePaid(invoiceNumber)) {
             throw new IllegalStateException("Invoice " + invoiceNumber + " is already marked as Paid");
         }
         selectCheckBoxByValue(invoiceNumber);
@@ -289,7 +295,7 @@ public boolean isInvoicePartiallyPaid(String invoiceNumber){
         super.click(confirmInvoiceStatusButton);
     }
 
-    public boolean isInvoicePaid(String invoiceNumber){
+    public boolean isInvoicePaid(String invoiceNumber) {
         WebElement invoiceStatus =
                 super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber));
         return invoiceStatus
@@ -298,12 +304,28 @@ public boolean isInvoicePartiallyPaid(String invoiceNumber){
                 .equalsIgnoreCase("Paid");
     }
 
+    public void makeInvoiceStatusDraft(String invoiceNumber){
+        if (isInvoiceDraft(invoiceNumber)){
+            throw new IllegalStateException("The invoice" + invoiceNumber + "Already marked as Draft");
+        }
+        super.click(getCheckboxByValue(invoiceNumber));
+        super.click(markAsButton);
+        super.click(draftButton);
+        super.click(confirmInvoiceStatusButton);
 
 
+    }
 
+    public boolean isInvoiceDraft(String invoiceNumber){
+        String status = super
+                .waitForElementByLocator(invoiceStatusLocator(invoiceNumber))
+                .getText()
+                .trim()
+                .toLowerCase();
 
+                return "draft".equalsIgnoreCase(status);
 
-
+    }
 
 
 // =========================
@@ -311,21 +333,21 @@ public boolean isInvoicePartiallyPaid(String invoiceNumber){
 // =========================
 
 
-private WebElement resolveSearchField(InvoiceSearchType type) {
-    switch (type) {
-        case INVOICE_NUMBER:
-            return searchInvoiceNumberInput;
-        case CLIENT_NAME:
-            return searchClientNameInput;
-        case COMPANY_NUMBER:
-            return searchCompanyNumberInput;
-        case RECIPIENT:
-            return searchRecipientInput;
-        default:
-            throw new IllegalArgumentException("Please enter only supported value");
-    }
+    private WebElement resolveSearchField(InvoiceSearchType type) {
+        switch (type) {
+            case INVOICE_NUMBER:
+                return searchInvoiceNumberInput;
+            case CLIENT_NAME:
+                return searchClientNameInput;
+            case COMPANY_NUMBER:
+                return searchCompanyNumberInput;
+            case RECIPIENT:
+                return searchRecipientInput;
+            default:
+                throw new IllegalArgumentException("Please enter only supported value");
+        }
 
-}
+    }
 
 }
 

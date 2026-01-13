@@ -102,6 +102,16 @@ public class InvoicesPageTest extends BaseTest {
         Assert.assertTrue(webApp.invoicesListPage().isInvoicePaid("41"));
     }
 
+    @Test
+    public void makeInvoiceStatusDraft(){
+        authService.defaultLogin();
+        webApp.homePage().openInvoicePage();
+        webApp.invoicesListPage().makeInvoiceStatusDraft("41");
+        Assert.assertTrue(webApp.invoicesListPage().isInvoiceDraft("41"));
+
+    }
+
+
 
 
 
