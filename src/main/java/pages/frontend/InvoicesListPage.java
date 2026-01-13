@@ -54,40 +54,40 @@ public class InvoicesListPage extends BasePage {
     private WebElement cancelInvoiceButton;
 
     @FindBy(css = ".anull-deanull-drop-down .anull")
-    WebElement cancelInvoiceDropDownButton;
+    private WebElement cancelInvoiceDropDownButton;
 
     @FindBy(css = "button.modal-confirm__ok-button")
-    WebElement modalConfirmButton;
+    private WebElement modalConfirmButton;
 
     @FindBy(css = ".deanull[title = 'Remove cancellation']")
-    WebElement removeCancellationButton;
+    private WebElement removeCancellationButton;
 
     @FindBy(id = "#okmsg")
-    WebElement cancellationOkMessage;
+    private WebElement cancellationOkMessage;
 
     @FindBy(css = "input[name='chk-all']")
-    WebElement checkAllBoxInvoices;
+    private WebElement checkAllBoxInvoices;
 
     @FindBy (css = "a[title='Mark as']")
-    WebElement markAsButton;
+    private WebElement markAsButton;
 
     @FindBy (css = "div .partially-paid")
-    WebElement partiallyPaidButton;
+    private  WebElement partiallyPaidButton;
 
     @FindBy(css = "div .paid")
-    WebElement paidButton;
+    private  WebElement paidButton;
 
     @FindBy(css = "div .draft")
-    WebElement draftButton;
+    private  WebElement draftButton;
 
     @FindBy(css = "div .accounted")
-    WebElement postedButton;
+    private  WebElement postedButton;
 
     @FindBy(css = "div .archive")
-    WebElement archiveButton;
+    private  WebElement archiveButton;
 
     @FindBy(css = "div[rel='unpaid']")
-    WebElement unPaidButton;
+    private  WebElement unPaidButton;
 
     @FindBy(css = "div .modal-confirm__buttons button.modal-confirm__ok-button")
     WebElement confirmInvoiceStatusButton;
