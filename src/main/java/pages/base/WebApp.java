@@ -12,6 +12,7 @@ public class WebApp {
     private RegisterPage registerPage;
     private RegistrationConfirmPage regConfirmPage;
     private HomePage homePage;
+    private NewInvoicePage newInvoicePage;
 
 
     public WebApp(WebDriver driver){
@@ -58,6 +59,13 @@ public class WebApp {
             homePage = new HomePage(driver);
         }
         return  homePage;
+    }
+
+    public NewInvoicePage newInvoicePage(){
+       if (newInvoicePage == null){
+           newInvoicePage = new NewInvoicePage(driver);
+       }
+       return newInvoicePage;
     }
 
 
