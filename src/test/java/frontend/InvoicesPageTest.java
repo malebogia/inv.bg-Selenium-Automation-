@@ -111,6 +111,11 @@ public class InvoicesPageTest extends BaseTest {
 
     }
 
+    @Test
+    public void login(){
+        authService.defaultLogin();
+    }
+
 
 
 

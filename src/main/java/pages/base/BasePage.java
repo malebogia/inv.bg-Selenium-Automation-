@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -102,6 +103,29 @@ public class BasePage {
     public void waitForElementDisappear(By locator) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+    //==================
+    // Select Helpers
+    //==================
+
+    protected void selectByVisibleText(WebElement dropdown, String visibleText){
+        wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+        new Select(dropdown).selectByVisibleText(visibleText);
+
+    }
+
+    protected void selectByValue(WebElement dropdown, String value){
+        wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+        new Select(dropdown).selectByValue(value);
+
+    }
+
+    protected void selectByIndex(WebElement dropdown, String index){
+        wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+        new Select(dropdown).selectByValue(index);
+
+    }
+
 
 
 }

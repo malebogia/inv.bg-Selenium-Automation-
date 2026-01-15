@@ -92,6 +92,9 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "div .modal-confirm__buttons button.modal-confirm__ok-button")
     WebElement confirmInvoiceStatusButton;
 
+    @FindBy(css = "a.new")
+    WebElement newInvoiceButton;
+
     public InvoicesListPage(WebDriver driver) {
         super(driver);
     }
@@ -153,6 +156,11 @@ public class InvoicesListPage extends BasePage {
         }
         return super.waitForElementByLocator(checkboxLocator);
     }
+
+    public void clickNewInvoiceButton(){
+        super.click(newInvoiceButton);
+    }
+
 
 
     // =========================
@@ -326,6 +334,8 @@ public class InvoicesListPage extends BasePage {
                 return "draft".equalsIgnoreCase(status);
 
     }
+
+
 
 
 // =========================
