@@ -13,6 +13,7 @@ public class WebApp {
     private RegistrationConfirmPage regConfirmPage;
     private HomePage homePage;
     private NewInvoicePage newInvoicePage;
+    private InvoiceCreatedConfirmPage invoiceConfirmPage;
 
 
     public WebApp(WebDriver driver){
@@ -67,6 +68,13 @@ public class WebApp {
        }
        return newInvoicePage;
     }
+
+   public InvoiceCreatedConfirmPage invoiceConfirmPage(){
+        if (invoiceConfirmPage == null){
+            invoiceConfirmPage = new InvoiceCreatedConfirmPage(driver);
+        }
+        return invoiceConfirmPage;
+   }
 
 
 

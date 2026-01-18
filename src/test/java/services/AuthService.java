@@ -13,14 +13,27 @@ public class AuthService {
         this.webApp = webApp;
     }
 
-    private void login(String email, String password, Language language){
+    private void login(String email, String password, Language language) {
         webApp.mainPage().openLoginPage();
         webApp.mainPage().startLogin(email);
-        webApp.loginPage().login(email,password,language);
+        webApp.loginPage().login(email, password, language);
 
     }
 
-    public void defaultLogin(){
-        login(DEFAULT_VALID_EMAIL,DEFAULT_VALID_PASSWORD,Language.EN);
+    public void defaultLogin() {
+        login(DEFAULT_VALID_EMAIL, DEFAULT_VALID_PASSWORD, Language.EN);
     }
+
+
+    public void loginToInvoicePage() {
+        defaultLogin();
+        if (!webApp.invoicesListPage().isInvoicePageOpened()) {
+            webApp.homePage().openInvoicePage();
+        }
+
+
+    }
+
 }
+
+

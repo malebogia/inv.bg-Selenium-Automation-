@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 import pages.base.WebApp;
 
+import java.util.Objects;
+
 public class HomePage extends BasePage {
 
     private String url = "https://tester-123.inv.bg/home";
@@ -24,6 +26,9 @@ public class HomePage extends BasePage {
 
     @FindBy (id = "tabs_invoices/new")
     WebElement newInvoiceButton;
+
+    @FindBy (id = "div#home_stats")
+    WebElement homePageStats;
 
 
     // =========================
@@ -50,6 +55,10 @@ public class HomePage extends BasePage {
     // =========================
     // Business action
     // =========================
+
+   public boolean isHomePageOpened(){
+       return super.isElementDisplayed(homePageStats);
+    }
 
     public void openInvoicePage(){
         if (isInvoiceButtonVisible()){

@@ -1,16 +1,19 @@
 package frontend;
 
 import base.BaseTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.base.WebApp;
 
 public class NewInvoiceTest extends BaseTest {
 
     @Test
-    public void tryCalendar(){
-        authService.defaultLogin();
-        webApp.homePage().openNewInvoicePage();
-        webApp.newInvoicePage().chooseDateOfIssueAndDateOfSupply("12","12");
+    public void createNewInvoice(){
+        authService.loginToInvoicePage();
+        webApp.invoicesListPage().clickNewInvoiceButtonn();
+        webApp.newInvoicePage().tryToCreateNewInvoice("Kiril Kiril","12345678", "Toni Toni", "Sofia", "Mladost nomer 4",
+                "Milen Milen", "19","20","Awesome Cotton Towels","Pamuk");
+        Assert.assertTrue(webApp.newInvoicePage().isErrorNewInvoiceMessageDisplayed());
 
     }
+
 }
