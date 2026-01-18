@@ -95,6 +95,7 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "a.new")
     WebElement newInvoiceButton;
 
+
     public InvoicesListPage(WebDriver driver) {
         super(driver);
     }
@@ -140,6 +141,10 @@ public class InvoicesListPage extends BasePage {
     // Basic actions
     // =========================
 
+    public boolean isInvoicePageOpened(){
+        return super.isElementDisplayed(cancelInvoiceButton);
+    }
+
 
     public boolean isUserPanelDisplayed() {
         return super.isElementDisplayed(userPanel);
@@ -157,7 +162,7 @@ public class InvoicesListPage extends BasePage {
         return super.waitForElementByLocator(checkboxLocator);
     }
 
-    public void clickNewInvoiceButton(){
+    public void clickNewInvoiceButtonn(){
         super.click(newInvoiceButton);
     }
 
@@ -334,7 +339,6 @@ public class InvoicesListPage extends BasePage {
                 return "draft".equalsIgnoreCase(status);
 
     }
-
 
 
 
