@@ -14,6 +14,7 @@ public class WebApp {
     private HomePage homePage;
     private NewInvoicePage newInvoicePage;
     private InvoiceCreatedConfirmPage invoiceConfirmPage;
+    private EditInvoicePage editInvoicePage;
 
 
     public WebApp(WebDriver driver){
@@ -74,6 +75,13 @@ public class WebApp {
             invoiceConfirmPage = new InvoiceCreatedConfirmPage(driver);
         }
         return invoiceConfirmPage;
+   }
+
+   public EditInvoicePage editInvoicePage(){
+        if (editInvoicePage == null){
+            editInvoicePage = new EditInvoicePage(driver);
+        }
+        return editInvoicePage;
    }
 
 

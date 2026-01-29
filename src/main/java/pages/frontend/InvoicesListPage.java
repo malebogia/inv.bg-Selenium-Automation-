@@ -100,6 +100,9 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = "a.new")
     WebElement newInvoiceButton;
 
+    @FindBy (css = "a[data-id='44']")
+    WebElement editInvoiceButton;
+
 
 
 
@@ -169,6 +172,10 @@ public class InvoicesListPage extends BasePage {
 
     public void clickNewInvoiceButton() {
         super.click(newInvoiceButton);
+    }
+
+    public void clickEditInvoicePageButton(){
+        super.click(editInvoiceButton);
     }
 
 

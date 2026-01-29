@@ -180,23 +180,11 @@ public class InvoicesPageTest extends BaseTest {
         logger.info("STEP: Apply 'Draft' status to invoice #{}",invoiceNumber);
         webApp.invoicesListPage().makeInvoiceStatusDraft(invoiceNumber);
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         Assert.assertTrue(webApp.invoicesListPage().isInvoiceDraft(invoiceNumber),
         "Assertion failed: Invoice #" + invoiceNumber + "was not updated to 'Draft' status" );
 
     }
 
-
-  /*  @Test public void checkSingleMethod(){
-
-    }
-
-*/
 
 
 
