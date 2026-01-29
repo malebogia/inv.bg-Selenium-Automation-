@@ -6,11 +6,16 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pages.base.BasePage;
 
 import java.util.List;
 
 public class InvoicesListPage extends BasePage {
+
+    protected static final Logger logger =
+            LoggerFactory.getLogger(InvoicesListPage.class);
 
 
     // =========================
@@ -62,7 +67,7 @@ public class InvoicesListPage extends BasePage {
     @FindBy(css = ".deanull[title = 'Remove cancellation']")
     private WebElement removeCancellationButton;
 
-    @FindBy(id = "#okmsg")
+    @FindBy(id = "okmsg")
     private WebElement cancellationOkMessage;
 
     @FindBy(css = "input[name='chk-all']")
@@ -96,6 +101,8 @@ public class InvoicesListPage extends BasePage {
     WebElement newInvoiceButton;
 
 
+
+
     public InvoicesListPage(WebDriver driver) {
         super(driver);
     }
@@ -106,7 +113,7 @@ public class InvoicesListPage extends BasePage {
     // =========================
 
     private By getCheckboxLocatorByValue(String value) {
-        return By.cssSelector("input[type='checkbox'][value='" + value + "']");
+        return By.xpath("//a[contains(text(), '" + value + "')]/ancestor::tr//input[@type='checkbox']");
     }
 
     private By invoiceSearchResultNameLocator =
@@ -122,18 +129,13 @@ public class InvoicesListPage extends BasePage {
             By.cssSelector("input[type='checkbox'][name='invoices[]']");
 
     private By invoicePaymentStatusLocator(String invoiceNumber) {
-        return By.xpath(
-                "//div[contains(@class,'drop-down-text') and contains(@class,'selenium-invoice-status-"
-                        + invoiceNumber + "')]"
-        );
+        return By.xpath("//a[contains(text(), '" + invoiceNumber + "')]/ancestor::tr//div[contains(@class, 'pstatus')]");
     }
 
-    private By invoiceStatusLocator(String invoiceNumber) {
-        return By.xpath(
-                "//tr[@data-invoice-id='" + invoiceNumber
-                        + "']//td[contains(@class,'selenium-inv-status invoices')]"
-        );
-
+    private By draftStatusLocator(String invoiceNumber){
+            return By.xpath(
+                    "//a[contains(text(), '" + invoiceNumber + "')]/ancestor::tr//span[contains(@class,'draft')]"
+            );
     }
 
 
@@ -141,7 +143,7 @@ public class InvoicesListPage extends BasePage {
     // Basic actions
     // =========================
 
-    public boolean isInvoicePageOpened(){
+    public boolean isInvoicePageOpened() {
         return super.isElementDisplayed(cancelInvoiceButton);
     }
 
@@ -150,22 +152,24 @@ public class InvoicesListPage extends BasePage {
         return super.isElementDisplayed(userPanel);
     }
 
-    public boolean isSuccessCancelInvoiceMsgDisplayed() {
+    public boolean isSuccessCancelInvoiceMessageDisplayed() {
         return super.isElementDisplayed(cancellationOkMessage);
     }
 
     private WebElement getCheckboxByValue(String value) {
         By checkboxLocator = getCheckboxLocatorByValue(value);
-        if (super.isElementNotPresent(checkboxLocator)) {
-            throw new AssertionError("Invoice with number " + value + " was not found");
+        try {
+            return super.waitForElementByLocator(checkboxLocator);
+        } catch (TimeoutException e) {
+            throw new AssertionError("Functional Failure: Invoice #" + value +
+                    " was not found within the timeout period");
         }
-        return super.waitForElementByLocator(checkboxLocator);
     }
 
-    public void clickNewInvoiceButtonn(){
+
+    public void clickNewInvoiceButton() {
         super.click(newInvoiceButton);
     }
-
 
 
     // =========================
@@ -267,8 +271,11 @@ public class InvoicesListPage extends BasePage {
     }
 
 
-    public boolean areAllInvoicesSelected() {
+    public void selectAllCheckboxesAtOnce() {
         super.click(checkAllBoxInvoices);
+    }
+
+    public boolean isAllCheckBoxesSelected() {
         List<WebElement> checkBoxes =
                 super.getElements(getAllInvoiceCheckBoxes);
         for (WebElement checkbox : checkBoxes) {
@@ -279,6 +286,30 @@ public class InvoicesListPage extends BasePage {
         return true;
     }
 
+    public void makeInvoiceStatusDraft(String invoiceNumber){
+        if (isInvoiceDraft(invoiceNumber)) {
+            logger.warn("Invoice [{}], is already in DRAFT status",invoiceNumber);
+            return;
+        }
+        selectCheckBoxByValue(invoiceNumber);
+        super.click(markAsButton);
+        super.click(draftButton);
+        super.click(confirmInvoiceStatusButton);
+
+    }
+
+
+    public boolean isInvoiceDraft(String invoiceNumber){
+      try{
+          WebElement status =
+                  super.waitForElementByLocator(draftStatusLocator(invoiceNumber));
+          return status.getText().trim().equalsIgnoreCase("draft");
+      } catch (TimeoutException e) {
+          return false;
+      }
+    }
+
+
     public void makePartiallyPaidInvoiceStatus(String invoiceNumber) {
         selectCheckBoxByValue(invoiceNumber);
         super.click(markAsButton);
@@ -287,14 +318,10 @@ public class InvoicesListPage extends BasePage {
     }
 
     public boolean isInvoicePartiallyPaid(String invoiceNumber) {
-        WebElement invoiceStatus =
-                super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber));
-
-        return invoiceStatus
-                .getText()
-                .trim()
-                .equalsIgnoreCase("Partially paid");
-
+       return super.waitForElementByLocator(invoicePaymentStatusLocator(invoiceNumber)).
+                getText().
+                trim().
+                equalsIgnoreCase("Partially paid");
 
     }
 
@@ -317,28 +344,10 @@ public class InvoicesListPage extends BasePage {
                 .equalsIgnoreCase("Paid");
     }
 
-    public void makeInvoiceStatusDraft(String invoiceNumber){
-        if (isInvoiceDraft(invoiceNumber)){
-            throw new IllegalStateException("The invoice" + invoiceNumber + "Already marked as Draft");
-        }
-        super.click(getCheckboxByValue(invoiceNumber));
-        super.click(markAsButton);
-        super.click(draftButton);
-        super.click(confirmInvoiceStatusButton);
 
 
-    }
 
-    public boolean isInvoiceDraft(String invoiceNumber){
-        String status = super
-                .waitForElementByLocator(invoiceStatusLocator(invoiceNumber))
-                .getText()
-                .trim()
-                .toLowerCase();
 
-                return "draft".equalsIgnoreCase(status);
-
-    }
 
 
 
@@ -363,6 +372,33 @@ public class InvoicesListPage extends BasePage {
 
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
