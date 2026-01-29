@@ -153,7 +153,8 @@ public class NewInvoicePage extends BasePage {
     /*Trying to create a new invoice after reaching the limit of
     created clients according to the tarrif plan*/
     public void tryToCreateNewInvoice(String billTo, String companyNumber, String accPerson, String city,
-                                 String address, String recipient, String dateOfIssue, String dateOfSupply,String savedItem, String item
+                                 String address, String recipient, String dateOfIssue,
+                                      String dateOfSupply,String savedItem, String item
     ) {
         if (!super.isElementSelected(invoiceRadioButton)) {
             super.click(invoiceRadioButton);

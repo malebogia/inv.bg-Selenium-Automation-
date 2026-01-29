@@ -7,6 +7,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected static final Logger logger =
+            LoggerFactory.getLogger(BasePage.class);
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -123,6 +127,16 @@ public class BasePage {
     protected void selectByIndex(WebElement dropdown, String index){
         wait.until(ExpectedConditions.elementToBeClickable(dropdown));
         new Select(dropdown).selectByValue(index);
+
+    }
+
+    protected boolean waitForTextToBePresentInElement(By locator, String waitedText){
+        try {
+            return wait.until(ExpectedConditions.textToBePresentInElementLocated(locator,waitedText));
+        } catch (Exception e){
+            return false;
+        }
+
 
     }
 

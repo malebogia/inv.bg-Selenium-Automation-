@@ -48,9 +48,9 @@ public class BaseTest {
             logger.info("TEST PASSED: {}", result.getName());
         }
 
-        if (driver != null) {
+        /*if (driver != null) {
             driver.quit();
-        }
+        }*/
 
 
         MDC.clear();

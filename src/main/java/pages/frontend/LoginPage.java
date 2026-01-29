@@ -38,6 +38,8 @@ public class LoginPage extends BasePage {
     @FindBy(id = "firstloginalert2")
     WebElement firstLoginAlert;
 
+
+
     // =========================
     // Basic actions
     // =========================
