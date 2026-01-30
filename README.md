@@ -12,7 +12,7 @@ Training my mind to think in layers and architectures for automation
 
 The project is based on the INV.BG web application for invoice management.
 
-⚠️ Note: Development of this project has been paused because I decided to start practicing on local projects using Docker for better hands-on experience with containerized testing environments.
+ Note: Development of this project has been paused because I decided to start practicing on local projects using Docker for better hands-on experience with containerized testing environments.
 
 AI-Assisted Learning Workflow
 
@@ -26,4 +26,4 @@ I almost always rewrite code manually, letter by letter, to internalize patterns
 
 This approach helps me learn faster, retain knowledge, and write clean, maintainable code
 
-💬 This demonstrates thoughtful automation learning — not just automation execution, but also understanding, evaluating, and improving code.
+This demonstrates thoughtful automation learning — not just automation execution, but also understanding, evaluating, and improving code.
